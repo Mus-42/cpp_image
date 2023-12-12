@@ -23,7 +23,7 @@ namespace img {
         
         ~Image() noexcept = default;
 
-        Image(uint32_t width, uint32_t height) noexcept : m_width(width), m_height(height), 
+        Image(uint32_t width, uint32_t height) : m_width(width), m_height(height), 
             m_pixels(std::make_unique<Color[]>(static_cast<size_t>(width * height))) 
         {
         }

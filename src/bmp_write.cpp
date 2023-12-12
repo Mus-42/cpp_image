@@ -141,7 +141,7 @@ namespace img::bmp {
                 }
             } break;
             case BitsPerPixel::Four: {
-                buf[index >> 1] |= (col.r >> 14 << 2 | col.g >> 15 << 1 | col.b >> 15) << ((index & 1) * 4);
+                buf[index >> 1] |= (col.r >> 14 << 2 | col.g >> 15 << 1 | col.b >> 15) << ((index & 1 ^ 1) << 2);
             } break;
             case BitsPerPixel::Eight: {
                 buf[index] = col.r >> 13 << 5 | col.g >> 13 << 2 | col.b >> 14;

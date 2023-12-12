@@ -32,7 +32,7 @@ namespace img {
                 "BMP Read error: can't open file",
                 "BMP Read error: invalid bmp magic",
                 "BMP Read error: unexpected EOF",
-                "BMP Read error: unsupported bitmap header (expected BITMAPINFOHEADER v1 v3 v4 or v5)"
+                "BMP Read error: unsupported bitmap header (expected BITMAPINFOHEADER v1 v4 or v5)"
                 "BMP Read error: invalid (or unsupported) values in bitmap header"
             };
 

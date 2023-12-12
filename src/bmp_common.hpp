@@ -6,8 +6,7 @@ namespace img::bmp {
         constexpr size_t bmp_file_header_size = 14;
 
         constexpr size_t dib_v1_header_size = 40;
-        // NOTE: can't read v2 because it's undocumented
-        constexpr size_t dib_v3_header_size = 56;
+        // NOTE: can't read v2 v3 because it's undocumented
         constexpr size_t dib_v4_header_size = 108;
         constexpr size_t dib_v5_header_size = 124;
 
