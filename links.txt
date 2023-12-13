@@ -1,0 +1,10 @@
+BMP
+https://learn.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapv5header
+https://learn.microsoft.com/en-us/windows/win32/gdi/bitmap-storage
+PNG
+https://www.w3.org/TR/png-3/
+CRC
+http://zlib.net/crc_v3.txt
+Deflate
+https://www.w3.org/Graphics/PNG/RFC-1951
+https://www.rfc-editor.org/rfc/rfc1951#section-1.2

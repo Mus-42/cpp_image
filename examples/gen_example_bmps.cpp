@@ -23,7 +23,7 @@ int main() {
     };
 
     for (auto bpp : all_bpps) {
-        auto path = "out/write_bmp_out_" + std::to_string(static_cast<uint8_t>(bpp)) + ".bmp";
+        auto path = "tests/out/e0_" + std::to_string(static_cast<uint8_t>(bpp)) + "bpp.bmp";
         std::cout << path << '\n';
         img::bmp::write_image(path, img, { .bpp = bpp });
     }

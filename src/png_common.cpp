@@ -63,16 +63,18 @@ namespace img::png::impl {
         size_t currend_bit;
     };
     
-    std::vector<uint8_t> dectrypt_deflate_stream(const uint8_t* data, size_t size) {
+    std::vector<uint8_t> deflate_decompress(const uint8_t* data, size_t size) {
         BitIter it{data, size};
+
+        // TODO zlib header?
+
         std::vector<uint8_t> decrypted;
         bool bfinal;
         do {
             bfinal = it.get_next();
             unsigned method = it.get_next() << 1u | static_cast<unsigned>(it.get_next());
-            switch (method) {
-            // no compression
-            case 0b00: {
+            if (method == 0) {
+                // no compression
                 it.next_byte();
                 uint16_t len = it.get_next_byte() | it.get_next_byte() << 8;
                 uint16_t nlen = it.get_next_byte() | it.get_next_byte() << 8;
@@ -91,19 +93,19 @@ namespace img::png::impl {
                 decrypted.resize(at + len);
                 std::memcpy(decrypted.data() + at, it.get_ptr(), len);
                 it.eat_bytes(len);
-            } break;
-            // compressed with dynamic Huffman codes
-            case 0b10: {
+            } else {
+                if (method == 0b10) {
+                    // dynamic Huffman codes
+                    // TODO constuct
+                } else {
+                    if (method != 0b01) {
+                        throw PngReadError(PngReadErrorKind::INVALID_DEFLATE_CHUNK);
+                    }
+                    // compressed with fixed Huffman codes
+                    // TODO construct
+                }
                 
-            } break;
-            // compressed with fixed Huffman codes
-            case 0b01: {
-                do {
-                    // TODO
-                } while(42);
-            } break;
-            default:
-                throw PngReadError(PngReadErrorKind::INVALID_DEFLATE_CHUNK);
+                // TODO parse block
             }
         } while(!bfinal);
 

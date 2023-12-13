@@ -285,4 +285,43 @@ namespace img::bmp {
 
         return impl::read_pixel_data_bitfield(in, image_data_offset, header);
     }
+
+    BMPImageInfo read_image_info(const std::filesystem::path& path) {
+        std::ifstream in(path, std::ios::binary);
+        if (!in.is_open() || in.bad()) {
+            throw BmpReadError(BmpReadErrorKind::CANT_OPEN_FILE);
+        }
+
+        uint32_t file_size = 0, image_data_offset = 0;
+
+        impl::read_bmp_file_header(in, file_size, image_data_offset);
+        
+        impl::DibV5HeaderData header{};
+
+        impl::read_dib_header(in, header);
+
+        if (in.eof()) {
+            throw BmpReadError(BmpReadErrorKind::UNEXPECTED_EOF);
+        }
+
+        // partially validate header
+        if (
+            header.bpp != 1 && header.bpp != 4 && header.bpp != 8 && header.bpp != 16 && header.bpp != 24 && header.bpp != 32 ||
+            header.compression != 0 && header.compression != 3
+        ) {
+            throw BmpReadError(BmpReadErrorKind::INVALID_HEADER_DATA);
+        }
+
+        BMPImageInfo info{};
+
+        info.bpp = static_cast<BitsPerPixel>(header.bpp);
+        info.width = header.width;
+        info.height = header.height;
+        info.x_ppm = header.x_ppm;
+        info.y_ppm = header.y_ppm;
+
+        info.file_size = file_size;
+
+        return info;
+    }
 } // namespace img::bmp

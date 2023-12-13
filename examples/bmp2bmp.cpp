@@ -2,41 +2,38 @@
 #include <cpp_image/exceptions.hpp>
 
 #include <iostream>
-#include <string_view>
-#include <array>
+#include <cstdlib>
 
-#include <typeinfo>
+int main(int argc, const char** argv) {
+    // TODO add default args and multiple files at once
 
-int main() {
-    try {
-        std::array<std::pair<std::string_view, std::string_view>, 10> filenames = {{
-            { "examples/images/i0.bmp", "out/i0_bmp_rewrited.bmp" },
-
-            { "examples/images/i1_1bpp.bmp", "out/i1_1bpp_bmp_rewrited.bmp" },
-            { "examples/images/i1_4bpp.bmp", "out/i1_4bpp_bmp_rewrited.bmp" },
-            { "examples/images/i1_8bpp.bmp", "out/i1_8bpp_bmp_rewrited.bmp" },
-            { "examples/images/i1_24bpp.bmp", "out/i1_24bpp_bmp_rewrited.bmp" },
-
-            { "out/write_bmp_out_1.bmp", "out/write_bmp_out_1_bmp_rewrited.bmp" },
-            { "out/write_bmp_out_4.bmp", "out/write_bmp_out_4_bmp_rewrited.bmp" },
-            { "out/write_bmp_out_8.bmp", "out/write_bmp_out_8_bmp_rewrited.bmp" },
-            { "out/write_bmp_out_16.bmp", "out/write_bmp_out_16_bmp_rewrited.bmp" },
-            { "out/write_bmp_out_32.bmp", "out/write_bmp_out_32_bmp_rewrited.bmp" },
-        }};
-
-        for (auto [input, output] : filenames) {
-            auto img = img::bmp::read_image(input);
-            img::bmp::write_image(output, img);
-        }
-
-        std::cout << "SUCCESSFUL WRITED RESULT\n";
+    if (argc != 7 || std::string_view(argv[1]) != "-i" || std::string_view(argv[3]) != "-o" || std::string_view(argv[5]) != "-bpp") {
+        std::cout << R"(
+            Usage:
+            bmp2bmp -i input_file -o output_file -bpp output_bpp
+        )";
+        return EXIT_FAILURE;
     }
-    catch (img::bmp::BmpReadError& e) {
-        std::cout << e.what() << std::endl;
-        std::cout << static_cast<uint32_t>(e.kind) << std::endl;
+
+    const char* input = argv[2];
+    const char* output = argv[4];
+    const char* bpp_str = argv[6];
+
+    unsigned long bpp = std::strtoul(bpp_str, nullptr, 10);
+    
+    if (bpp != 1 && bpp != 4 && bpp != 8 && bpp != 16 && bpp != 32) {
+        std::cout << R"(
+            invalid bpp specified: only 1, 4, 8, 16, 32 supported for now
+        )";
+        return EXIT_FAILURE;
+    }
+
+    try {
+        auto img = img::bmp::read_image(input);
+        img::bmp::write_image(output, img, { static_cast<img::bmp::BitsPerPixel>(bpp) });
     }
     catch (std::exception& e) {
         std::cout << e.what() << std::endl;
-        std::cout << typeid(e).name() << std::endl;
+        return EXIT_FAILURE;
     }
 }

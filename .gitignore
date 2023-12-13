@@ -1,3 +1,4 @@
 /build
-/out
+/tests/out
 /.vscode
+/bin

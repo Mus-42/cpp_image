@@ -23,9 +23,23 @@ namespace img::bmp {
         // TODO
     };
 
+    struct BMPImageInfo {
+        BitsPerPixel bpp;
+
+        uint32_t width;
+        uint32_t height;
+
+        uint32_t x_ppm;
+        uint32_t y_ppm;
+
+        uint32_t file_size;
+    };
+
     void write_image(const std::filesystem::path& path, const Image& img, const BMPWriteOptions& options = {});
 
     Image read_image(const std::filesystem::path& path);
+
+    BMPImageInfo read_image_info(const std::filesystem::path& path);
 } // namespace img::bmp 
 
 #endif//_CPP_IMAGE_BMP_HPP_
