@@ -43,7 +43,7 @@ namespace img::png {
             std::array<uint8_t, 4> chunk_type;
             in.read(reinterpret_cast<char*>(chunk_type.data()), 4);
 
-            std::cout << "Chunk: " << std::string_view(reinterpret_cast<char*>(chunk_type.data()), 4) << "\n";
+            //std::cout << "Chunk: " << std::string_view(reinterpret_cast<char*>(chunk_type.data()), 4) << "\n";
 
             if (in.eof()) {
                 throw PngReadError(PngReadErrorKind::UNEXPECTED_EOF);
@@ -75,6 +75,8 @@ namespace img::png {
                 break;
             }
         }
+
+        // TODO image_data -> filtering -> deflate -> image 
 
         return {};
     }

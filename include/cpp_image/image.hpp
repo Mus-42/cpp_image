@@ -32,12 +32,14 @@ namespace img {
             return { m_width, m_height };
         }
 
+        // subscript operator 
         Color& operator[](std::pair<uint32_t, uint32_t> index) noexcept {
             const auto [i, j] = index;
             size_t pixels_index = static_cast<size_t>(i * m_width + j);
             return m_pixels[pixels_index];
         }
 
+        // subscript operator (const one)
         const Color& operator[](std::pair<uint32_t, uint32_t> index) const noexcept {
             const auto [i, j] = index;
             size_t pixels_index = static_cast<size_t>(i * m_width + j);
